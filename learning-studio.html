@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Learning Studio | One connected workflow</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef;
+  --cp-bg-elevated: #fcfbf8;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f5f5f5;
+  --cp-border: #dedede;
+  --cp-border-strong: #919191;
+  --cp-text: #242424;
+  --cp-text-muted: #5c5c5c;
+  --cp-text-soft: #6f6f6f;
+  --cp-accent: #b11f4b;
+  --cp-accent-hover: #9a1a41;
+  --cp-accent-soft: rgba(177, 31, 75, 0.08);
+  --cp-accent-fg: #ffffff;
+  --cp-success: #16a34a;
+  --cp-danger: #dc2626;
+  --cp-warning: #f59e0b;
+  --cp-link: #0078d4;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+  --cp-overlay: rgba(255, 255, 255, 0.8);
+  --cp-panel: rgba(255, 255, 255, 0.86);
+  --cp-panel-strong: rgba(255, 255, 255, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.55);
+  --cp-highlight: rgba(177, 31, 75, 0.12);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #3d3b3a;
+  --cp-bg-elevated: #343231;
+  --cp-surface: #292929;
+  --cp-surface-soft: #2e2e2e;
+  --cp-border: #474747;
+  --cp-border-strong: #5f5f5f;
+  --cp-text: #dedede;
+  --cp-text-muted: #919191;
+  --cp-text-soft: #b0b0b0;
+  --cp-accent: #fd8ea1;
+  --cp-accent-hover: #fb7b91;
+  --cp-accent-soft: rgba(253, 142, 161, 0.14);
+  --cp-accent-fg: #1a1a1a;
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --cp-overlay: rgba(41, 41, 41, 0.88);
+  --cp-panel: rgba(41, 41, 41, 0.72);
+  --cp-panel-strong: rgba(41, 41, 41, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.04);
+  --cp-highlight: rgba(253, 142, 161, 0.12);
+}
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; background: var(--cp-bg); color: var(--cp-text); font: 16px/1.5 "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif; }
+    button, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: var(--cp-link); }
+    :focus-visible { outline: 3px solid var(--cp-accent); outline-offset: 4px; }
+    h2:focus { outline: none; }
+    .skip { position: absolute; top: -80px; left: 16px; padding: 12px; background: var(--cp-accent); color: var(--cp-accent-fg); z-index: 3; }
+    .skip:focus { top: 8px; }
+    header { border-bottom: 1px solid var(--cp-border); background: var(--cp-surface); }
+    .bar { max-width: 1328px; margin: auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 19px; font-weight: 650; letter-spacing: -.025em; }
+    .brand-icon { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; width: 26px; height: 26px; }
+    .brand-icon i { background: var(--cp-accent); border-radius: 2px; }
+    .label { font: 600 10px/1.4 Consolas, "Courier New", Courier, monospace; text-transform: uppercase; letter-spacing: .06em; }
+    .pill { border: 1px solid var(--cp-border); border-radius: 6px; padding: 6px 9px; color: var(--cp-text-muted); }
+    main { max-width: 1328px; margin: auto; padding: 24px; }
+    .eyebrow { color: var(--cp-accent); margin: 0 0 8px; }
+    h1 { font-size: clamp(29px, 3.25vw, 43px); letter-spacing: -.04em; font-weight: 650; line-height: 1.15; margin: 0 0 12px; }
+    .hero { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; margin: 0 0 20px; }
+    .hero p:last-child { color: var(--cp-text-muted); margin: 0; font-size: 14px; }
+    .native-label { color: var(--cp-accent); border: 1px solid var(--cp-accent); border-radius: 10px; padding: 9px 12px; min-width: 160px; max-width: 210px; font-size: 11px; }
+    .native-label strong { display: block; font-size: 12px; margin-bottom: 2px; }
+    .record-shell { border: 1px solid var(--cp-border); border-radius: 16px; background: var(--cp-surface); overflow: hidden; }
+    .record-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; padding: 12px 18px; border-bottom: 1px solid var(--cp-border); font-size: 12px; }
+    .record-id { color: var(--cp-accent); font: 600 12px Consolas, "Courier New", Courier, monospace; }
+    .record-top strong { font-weight: 600; }
+    .workspace-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 8px; gap: 8px; }
+    .workspace-tab { border: 1px solid var(--cp-border); border-radius: 10px; padding: 10px 14px; background: var(--cp-surface); color: var(--cp-text); text-align: left; min-height: 68px; }
+    .workspace-tab strong { display: block; font-size: 15px; }
+    .workspace-tab span { font-size: 11px; color: var(--cp-text-muted); }
+    .workspace-tab[aria-selected="true"] { border-color: var(--cp-accent); background: var(--cp-accent-soft); }
+    .same-record { margin: 0; padding: 0 18px 12px; color: var(--cp-text-muted); font-size: 11px; }
+    .flow-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 22px 0 10px; }
+    .flow-heading h2 { font-size: 16px; margin: 0; font-weight: 650; }
+    .flow-heading p { margin: 0; color: var(--cp-text-muted); font-size: 11px; }
+    .flow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; list-style: none; padding: 0; margin: 0 0 16px; }
+    .flow li { position: relative; }
+    .flow li:not(:last-child)::after { content: "\2192"; position: absolute; right: -13px; top: 36px; width: 12px; color: var(--cp-text-muted); text-align: center; font-size: 14px; }
+    .flow button { width: 100%; height: 108px; padding: 12px; border: 1px solid var(--cp-border); border-radius: 10px; background: var(--cp-surface); color: var(--cp-text); text-align: left; }
+    .flow button[aria-current="step"] { border-color: var(--cp-accent); background: var(--cp-accent-soft); }
+    .flow .number { display: block; color: var(--cp-accent); font: 600 12px Consolas, "Courier New", Courier, monospace; margin-bottom: 7px; }
+    .flow strong { display: block; font-size: 14px; font-weight: 650; line-height: 1.2; margin-bottom: 5px; }
+    .flow small { display: block; font-size: 10px; color: var(--cp-text-muted); line-height: 1.35; }
+    .story { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+    .story-card, .record-view { border: 1px solid var(--cp-border); border-radius: 16px; background: var(--cp-surface); padding: 22px; min-width: 0; }
+    .story-card h2 { font-size: 23px; letter-spacing: -.025em; line-height: 1.2; margin: 0 0 10px; }
+    .author-story { color: var(--cp-text); font-size: 15px; margin: 0 0 16px; max-width: 70ch; }
+    .system-story { border-left: 2px solid var(--cp-accent); padding-left: 14px; margin: 16px 0; }
+    .system-story h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 5px; }
+    .system-story p { margin: 0; font-size: 12px; color: var(--cp-text-muted); }
+    .guardrail { color: var(--cp-text-muted); font-size: 12px; margin: 14px 0; }
+    .guardrail strong { color: var(--cp-text); }
+    .technology { color: var(--cp-text-muted); font-size: 11px; margin: 14px 0 0; }
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; }
+    .primary, .secondary { min-height: 44px; padding: 10px 14px; border-radius: 10px; font-size: 12px; font-weight: 650; }
+    .primary { background: var(--cp-accent); border: 1px solid var(--cp-accent); color: var(--cp-accent-fg); }
+    .primary:hover { background: var(--cp-accent-hover); }
+    .secondary { background: var(--cp-surface); border: 1px solid var(--cp-border-strong); color: var(--cp-text); }
+    .secondary:disabled { color: var(--cp-text-muted); cursor: not-allowed; border-color: var(--cp-border); }
+    .record-view .label { color: var(--cp-accent); margin: 0 0 12px; }
+    .record-view h2 { font-size: 18px; margin: 0 0 4px; letter-spacing: -.02em; }
+    .view-caption { margin: 0 0 12px; color: var(--cp-text-muted); font-size: 11px; }
+    .record-view dl { margin: 0; }
+    .record-row { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 14px; padding: 10px 0; border-top: 1px solid var(--cp-border); }
+    dt { color: var(--cp-text-muted); font-size: 11px; }
+    dd { margin: 0; font-size: 12px; overflow-wrap: anywhere; }
+    .view-next { margin: 14px 0 0; border: 1px solid var(--cp-border); border-radius: 10px; padding: 10px 12px; font-size: 12px; background: var(--cp-bg-elevated); }
+    .view-next strong { display: block; font-size: 10px; color: var(--cp-accent); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+    .boundary { padding: 11px 14px; border: 1px solid var(--cp-border); border-radius: 10px; background: var(--cp-bg-elevated); font-size: 11px; color: var(--cp-text-muted); margin-top: 16px; }
+    .boundary strong { color: var(--cp-text); }
+    .resilience { border: 1px solid var(--cp-border); background: var(--cp-surface); border-radius: 16px; margin-top: 18px; padding: 0 18px; }
+    summary { cursor: pointer; padding: 15px 0; min-height: 48px; font-size: 13px; font-weight: 650; }
+    .resilience-body { border-top: 1px solid var(--cp-border); padding: 16px 0; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: 20px; align-items: start; }
+    label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 8px; }
+    select { width: 100%; min-height: 44px; padding: 10px; border: 1px solid var(--cp-border-strong); border-radius: 10px; background: var(--cp-bg-elevated); color: var(--cp-text); font-size: 12px; }
+    .scenario-copy { margin: 0; color: var(--cp-text-muted); font-size: 12px; }
+    .scenario-copy strong { color: var(--cp-text); display: block; margin-bottom: 7px; font-size: 14px; }
+    .scenario-facts { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .scenario-facts span { border: 1px solid var(--cp-border); border-radius: 6px; padding: 5px 8px; font: 10px Consolas, "Courier New", Courier, monospace; color: var(--cp-text); }
+    .build-heading { margin: 24px 0 12px; font-size: 15px; }
+    .build-status { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .build-card { background: var(--cp-bg-elevated); border: 1px solid var(--cp-border); border-radius: 16px; padding: 18px; }
+    .build-card h3 { margin: 0 0 8px; font-size: 13px; }
+    .build-card p, .build-card li { font-size: 11px; color: var(--cp-text-muted); }
+    .build-card p { margin: 0; }
+    .build-card ul { margin: 0; padding-left: 16px; }
+    .build-card li + li { margin-top: 5px; }
+    footer { border-top: 1px solid var(--cp-border); margin-top: 28px; }
+    .footer { max-width: 1328px; padding: 16px 24px; margin: auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; color: var(--cp-text-muted); font-size: 11px; }
+    .footer p { margin: 0; }
+    .footer button { border: 0; background: none; color: var(--cp-text-muted); min-height: 44px; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; padding: 6px 0; }
+    .live-status { min-height: 16px; margin: 10px 0 0; font-size: 11px; color: var(--cp-text-muted); }
+    @media (max-width: 1000px) {
+      .hero { flex-direction: column; gap: 14px; }
+      .native-label { max-width: none; }
+      .flow { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+      .flow li::after { display: none; }
+      .flow button { height: 98px; }
+      .story { grid-template-columns: minmax(0, 1fr); }
+      .build-status { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 600px) {
+      main { padding: 20px 16px; }
+      .bar { padding: 14px 16px; }
+      header .pill { max-width: 135px; font-size: 9px; }
+      .workspace-tabs { gap: 5px; }
+      .workspace-tab { padding: 10px 8px; }
+      .workspace-tab strong { font-size: 13px; }
+      .workspace-tab span { font-size: 9px; }
+      .flow-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .flow button { height: 104px; }
+      .story-card, .record-view { padding: 18px; }
+      .record-row { grid-template-columns: 88px minmax(0, 1fr); }
+      .controls { align-items: stretch; }
+      .controls button { max-width: 70%; }
+      .resilience-body { grid-template-columns: minmax(0, 1fr); }
+      .footer { padding-inline: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+    @media print {
+      header, .controls, .resilience, footer, .build-status, .build-heading, .live-status { display: none; }
+      main { max-width: none; padding: 0; }
+      .hero { margin-bottom: 12px; }
+      .flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .flow li::after { display: none; }
+      .story { grid-template-columns: minmax(0, 1fr); }
+      .record-view { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header><div class="bar"><div class="brand"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Learning Studio</div><span class="label pill">Hernan Acosta &middot; Visual explainer</span></div></header>
+  <main id="main">
+    <section id="flow-overview" aria-labelledby="page-title">
+      <div class="hero"><div><p class="eyebrow label">A content-authoring workspace for datacenter L&amp;D</p><h1 id="page-title">One product. One connected workflow.</h1><p>Not an LMS. Not a chatbot. A place to create, coordinate, review, and publish learning products.</p></div><div class="native-label"><strong>Native design: proposed</strong>Power Apps / Dataverse development is paused.</div></div>
+      <div class="record-shell">
+        <div class="record-top"><span><strong>Illustrated product:</strong> Datacenter technician onboarding</span><span class="record-id">DEMO-LP-024</span></div>
+        <div class="workspace-tabs" role="tablist" aria-label="Three views of one product record">
+          <button class="workspace-tab" id="view-create" data-view="create" type="button" role="tab" aria-selected="true" aria-controls="product-view" tabindex="0"><strong>Create</strong><span>Start a learning product</span></button>
+          <button class="workspace-tab" id="view-creations" data-view="creations" type="button" role="tab" aria-selected="false" aria-controls="product-view" tabindex="-1"><strong>Creations</strong><span>Open saved outputs</span></button>
+          <button class="workspace-tab" id="view-workroom" data-view="workroom" type="button" role="tab" aria-selected="false" aria-controls="product-view" tabindex="-1"><strong>Workroom</strong><span>Owner, notes, progress, next action</span></button>
+        </div>
+        <p class="same-record">Three views of the <strong>same product record</strong> &mdash; not three copies of the work.</p>
+      </div>
+      <div class="flow-heading"><h2>The author-to-published journey</h2><p>Click a step, or use Next, to explain the flow.</p></div>
+      <ol class="flow" id="flow-steps" aria-label="Learning product lifecycle"></ol>
+    </section>
+    <div class="story">
+      <section class="story-card" aria-labelledby="stage-title">
+        <p class="eyebrow label" id="stage-counter"></p>
+        <h2 id="stage-title" tabindex="-1"></h2>
+        <p class="author-story" id="author-story"></p>
+        <div class="system-story"><h3>Behind the screen</h3><p id="system-story"></p></div>
+        <p class="guardrail"><strong>Important:</strong> <span id="guardrail"></span></p>
+        <p class="technology" id="technology"></p>
+        <div class="controls"><button class="secondary" type="button" id="previous-step">Back</button><button class="primary" type="button" id="next-step">Next</button></div>
+      </section>
+      <section class="record-view" id="product-view" role="tabpanel" aria-labelledby="view-create">
+        <p class="label">Illustrated record &middot; DEMO-LP-024</p>
+        <h2 id="view-title">Create</h2>
+        <p class="view-caption" id="view-caption"></p>
+        <dl id="record-fields"></dl>
+        <div class="view-next"><strong>Next action</strong><span id="next-action"></span></div>
+      </section>
+    </div>
+    <p class="boundary"><strong>Public-safe illustration, not the live application.</strong> Product, job, file, approval, and publication states here are fictional examples. This static page does not authenticate users, create jobs, call AI, or enforce native permissions.</p>
+    <details class="resilience" id="reliability-details">
+      <summary>When something goes wrong: clear status, safe recovery</summary>
+      <div class="resilience-body"><div><label for="scenario">Choose an illustrated case</label><select id="scenario"><option value="retry">The same request is retried</option><option value="missing">An approved input is missing</option><option value="file-link">The file saves, but its record link fails</option><option value="edited">An approved draft is edited</option><option value="source-change">An approved source changes</option></select></div><div><p class="scenario-copy" id="scenario-copy"></p><div class="scenario-facts" id="scenario-facts"></div></div></div>
+    </details>
+    <h2 class="build-heading">What exists today versus the intended native setup</h2>
+    <div class="build-status">
+      <section class="build-card"><h3>Current web demo</h3><p id="current-implementation"></p></section>
+      <section class="build-card"><h3>Proposed native setup &mdash; paused</h3><p id="proposed-implementation"></p></section>
+      <section class="build-card"><h3>Verify before native implementation</h3><ul id="verification-list"></ul></section>
+    </div>
+    <p class="live-status" id="flow-status" role="status"></p>
+    <noscript><p>This visual explainer needs JavaScript to display its six illustrated lifecycle stages. No company system is connected.</p></noscript>
+  </main>
+  <footer><div class="footer"><p>Hernan Acosta &middot; Fictional demonstration data &middot; Independent project explanation, not an official Microsoft product</p><button id="restart-flow" type="button">Restart flow</button></div></footer>
+  <script>
+    "use strict";
+    const model = {"stages":[{"id":"create","title":"Create a product","caption":"Connect the right inputs","author":"Choose the learning product. Its approved Training Plan and source revisions are already connected to the same record.","system":"The product type selects the behind-the-scenes workflow. The author does not need to choose a flow or an AI tool.","guardrail":"A SharePoint file, or the newest revision, is not automatically an approved source. Approval must be established separately.","technology":"Proposed: Power Apps interface and Dataverse connected records.","status":"Ready to request a draft","next":"Request a draft from the connected, approved inputs.","view":"create"},{"id":"request","title":"Request a draft","caption":"Save a job. Return its ID.","author":"Request the draft and receive a tracking ID. You can leave the screen and return to check the saved job.","system":"A short intake flow establishes the authenticated requester, checks permissions, pins the exact input revision, recognizes retries by a unique request key, and saves the job before lengthy work begins.","guardrail":"The server must not trust a role or approval flag from the screen. A retry of the same request returns the existing job rather than creating another one.","technology":"Proposed: Power Automate intake, protected Dataverse job record, then a separate background flow.","status":"Job queued","next":"Follow the saved job in Workroom.","view":"workroom"},{"id":"prepare","title":"Prepare & confirm","caption":"Keep the human checkpoint","author":"Inspect the saved preview, make edits, and explicitly choose Generate for the confirmed revision.","system":"The background worker calls the product workflow. The first native Practical Activity proof intends to reuse existing PA Studio with complete approved inputs and required assets, not build a replacement generation engine.","guardrail":"Preserve validation, preview/edit, and explicit Generate checkpoints. If confirmation is needed, save the preview, wait, and resume from the confirmed revision.","technology":"Proposed native invocation of existing PA Studio; invocation and input/output contracts still need verification.","status":"Waiting for author confirmation","next":"Inspect preview revision 3 and explicitly confirm Generate.","view":"workroom"},{"id":"save","title":"Save & connect","caption":"One file, with its history","author":"Open the saved output in Creations. Workroom shows the same product's updated progress and next action.","system":"Record the actual file identity, file version, source versions, and originating job against the product. If PA Studio already saved the file, link that file rather than create another copy.","guardrail":"If saving succeeded but recording the link failed, reconnect the existing output. Do not blindly regenerate it.","technology":"Proposed: SharePoint document identity/version connected to Dataverse product, job, and source records.","status":"Draft saved: version 1","next":"Request review of this specific saved version.","view":"creations"},{"id":"review","title":"Review a version","caption":"Approval belongs to that version","author":"Request review of a specific saved version. An authorized reviewer approves that protected version or requests changes.","system":"Keep generation and approval separate. Bind the review decision to the exact protected file version and enforce reviewer permissions below the interface.","guardrail":"An edited draft does not inherit approval from an older version. Hiding or disabling a button is not a permission boundary.","technology":"Proposed protected records, files, and review actions; identity and permission handling still need verification.","status":"Version 1 approved","next":"A separately authorized publisher may publish version 1.","view":"workroom"},{"id":"publish","title":"Publish separately","caption":"Release the approved version","author":"An authorized person publishes the reviewed version as a separate action. Authors can find it through the same product record.","system":"Keep the published file and its lineage. A source change flags affected products for review rather than silently replacing published files.","guardrail":"Generated does not mean approved. Approved does not mean published. Publication requires its own authorized action.","technology":"Proposed publication controls and change-impact tracking across Dataverse records and SharePoint files.","status":"Version 1 published","next":"Monitor source changes and request a new review when needed.","view":"creations"}],"current":"The existing web demo uses React/TypeScript, Node.js, and SQLite. It has real local saved interactions; native integrations are simulated.","proposed":"Power Apps for the interface, Power Automate for coordination, controlled AI workflows for drafts, SharePoint for documents, and Dataverse for connected records and reusable sources.","verification":["Supported PA Studio invocation and input/output contracts","Word-template bindings and document-generation behavior","Authenticated identity, record/file/action permissions, and licensing"]};
+    const state = { step: 0, view: "create" };
+    const tabs = [...document.querySelectorAll("[data-view]")];
+    const steps = document.getElementById("flow-steps");
+    const viewCopy = {
+      create: ["Create", "The product, its approved plan, and its source revisions."],
+      creations: ["Creations", "Saved outputs and their versions, linked to this product."],
+      workroom: ["Workroom", "Ownership, notes, saved-job progress, and the next action."],
+    };
+    for (const [index, stage] of model.stages.entries()) {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.stage = String(index);
+      button.innerHTML = `<span class="number">0${index + 1}</span><strong>${stage.title}</strong><small>${stage.caption}</small>`;
+      button.addEventListener("click", () => selectStage(index));
+      item.append(button);
+      steps.append(item);
+    }
+    function row(label, value) {
+      const container = document.createElement("div");
+      container.className = "record-row";
+      const term = document.createElement("dt");
+      term.textContent = label;
+      const definition = document.createElement("dd");
+      definition.textContent = value;
+      container.append(term, definition);
+      return container;
+    }
+    function renderView() {
+      const stage = model.stages[state.step];
+      for (const tab of tabs) {
+        const selected = tab.dataset.view === state.view;
+        tab.setAttribute("aria-selected", String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      }
+      document.getElementById("product-view").setAttribute("aria-labelledby", `view-${state.view}`);
+      document.getElementById("view-title").textContent = viewCopy[state.view][0];
+      document.getElementById("view-caption").textContent = viewCopy[state.view][1];
+      let fields;
+      if (state.view === "create") {
+        fields = [["Product", "Practical Activity"], ["Training Plan", "DEMO-PLAN-03, revision 4 (approved)"], ["Source guide", "DEMO-SOURCE-12, revision 2 (approved)"], ["Input snapshot", "Revision 7; approval is verified separately"]];
+      } else if (state.view === "creations") {
+        fields = state.step >= 3
+          ? [["File", "DEMO-FILE-07"], ["Saved version", "Version 1"], ["Origin", "DEMO-JOB-104; input revision 7"], ["Available output", state.step === 5 ? "Published v1; illustrated View/Edit link" : "Draft v1; illustrated View/Edit link"]]
+          : [["Saved output", "Not yet illustrated at this stage"], ["Product", "DEMO-LP-024"], ["Source lineage", "Connected to the same product"], ["Next output", "Appears after Save & connect"]];
+      } else {
+        fields = [["Owner", "Demo author"], ["Progress", stage.status], ["Tracked job", state.step >= 1 ? "DEMO-JOB-104; saved independently of the browser" : "Not requested yet"], ["Notes", "Review and publication are separate actions"]];
+      }
+      document.getElementById("record-fields").replaceChildren(...fields.map(([label, value]) => row(label, value)));
+      document.getElementById("next-action").textContent = stage.next;
+    }
+    function selectStage(index, focus = true) {
+      state.step = index;
+      state.view = model.stages[index].view;
+      const stage = model.stages[index];
+      for (const button of document.querySelectorAll("[data-stage]")) {
+        if (Number(button.dataset.stage) === index) button.setAttribute("aria-current", "step");
+        else button.removeAttribute("aria-current");
+      }
+      document.getElementById("stage-counter").textContent = `Step ${index + 1} of ${model.stages.length}`;
+      document.getElementById("stage-title").textContent = stage.title;
+      document.getElementById("author-story").textContent = stage.author;
+      document.getElementById("system-story").textContent = stage.system;
+      document.getElementById("guardrail").textContent = stage.guardrail;
+      document.getElementById("technology").textContent = stage.technology;
+      document.getElementById("previous-step").disabled = index === 0;
+      document.getElementById("next-step").textContent = index === model.stages.length - 1 ? "Restart the story" : `Next: ${model.stages[index + 1].title}`;
+      document.getElementById("flow-status").textContent = `${stage.title}. Showing the ${viewCopy[state.view][0]} view of DEMO-LP-024.`;
+      renderView();
+      if (focus) document.getElementById("stage-title").focus({ preventScroll: true });
+    }
+    for (const [index, tab] of tabs.entries()) {
+      tab.addEventListener("click", () => { state.view = tab.dataset.view; renderView(); });
+      tab.addEventListener("keydown", event => {
+        if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
+          event.preventDefault();
+          const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1
+            : (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+          state.view = tabs[next].dataset.view;
+          renderView();
+          tabs[next].focus();
+        }
+      });
+    }
+    document.getElementById("previous-step").addEventListener("click", () => selectStage(Math.max(0, state.step - 1)));
+    document.getElementById("next-step").addEventListener("click", () => selectStage((state.step + 1) % model.stages.length));
+    document.getElementById("restart-flow").addEventListener("click", () => selectStage(0));
+    const scenarios = {
+      retry: ["A retry is not another job.", "The exact product, input revision, and unique request key identify the existing request. The system returns its saved job instead of duplicating work.", ["Product: DEMO-LP-024", "Request: DEMO-REQ-017", "Existing job: DEMO-JOB-104"]],
+      missing: ["Missing approval is a clear stop.", "The intake reports the missing approved Training Plan or source revision and tells the author what to correct. A newer file alone cannot satisfy that approval requirement.", ["Status: needs approved input", "Next: connect an approved revision", "No false success"]],
+      "file-link": ["Reconnect the file that already exists.", "If SharePoint saved the output but its record link failed, recovery locates the file by its saved identity and reconnects the metadata. It does not blindly generate a new document.", ["Existing file: DEMO-FILE-07", "Existing version: 1", "Action: reconnect, not regenerate"]],
+      edited: ["An edited version needs its own review.", "Approval of protected version 1 does not authorize an edited draft version 2. A properly authorized reviewer must review the new version before a separate publication action.", ["Version 1: prior approval", "Version 2: new review needed", "Permissions enforced below the UI"]],
+      "source-change": ["Flag the product; preserve the published file.", "A source revision change marks affected products for review. It does not silently overwrite an already published output or transfer approval to a new draft.", ["Published v1: retained", "Source update: review flagged", "Publication: separate action"]],
+    };
+    function renderScenario() {
+      const [title, body, facts] = scenarios[document.getElementById("scenario").value];
+      const heading = document.createElement("strong");
+      heading.textContent = title;
+      document.getElementById("scenario-copy").replaceChildren(heading, document.createTextNode(body));
+      document.getElementById("scenario-facts").replaceChildren(...facts.map(text => {
+        const item = document.createElement("span"); item.textContent = text; return item;
+      }));
+    }
+    document.getElementById("scenario").addEventListener("change", renderScenario);
+    document.getElementById("current-implementation").textContent = model.current;
+    document.getElementById("proposed-implementation").textContent = model.proposed;
+    for (const text of model.verification) {
+      const item = document.createElement("li"); item.textContent = text;
+      document.getElementById("verification-list").append(item);
+    }
+    selectStage(0, false);
+    renderScenario();
+  </script>
+</body>
+</html>
